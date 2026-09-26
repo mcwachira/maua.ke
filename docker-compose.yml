@@ -285,7 +285,7 @@ services:
   # AWS S3 in production — no code branching between "local disk" and "s3".
   # -------------------------------------------------------------------------
   minio:
-    image: minio/minio:latest
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     restart: unless-stopped
     command: ["server", "/data", "--console-address", ":9001"]
     environment:
