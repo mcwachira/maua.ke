@@ -64,7 +64,11 @@ RUN pnpm turbo run build --filter=web...
 
 FROM base AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
 COPY --from=installer /app/apps/web/public ./apps/web/public
@@ -72,6 +76,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 
 USER nextjs
-ENV PORT=3000
+
 EXPOSE 3000
+
 CMD ["node", "apps/web/server.js"]
