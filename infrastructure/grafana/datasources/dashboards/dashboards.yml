@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: "maua-ke"
+    orgId: 1
+    folder: "maua.ke"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards

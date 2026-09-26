@@ -32,8 +32,13 @@ COPY apps/api/ .
 RUN composer dump-autoload --optimize \
     && php artisan config:clear
 
-# Match PAYSLIP_STORAGE_DIR / DOCUMENT_STORAGE_DIR from docker-compose.yml
-RUN mkdir -p storage/payslips storage/documents \
+# Ecommerce storage dirs — must match the *_STORAGE_DIR vars in
+# docker-compose.yml's x-laravel-env block (PRODUCT_MEDIA_STORAGE_DIR,
+# INVOICE_STORAGE_DIR, RECEIPT_STORAGE_DIR, DOCUMENT_STORAGE_DIR).
+# Note: with FILESYSTEM_DISK=s3 these end up unused for actual uploads
+# (MinIO handles that) but Laravel still expects the local paths to
+# exist for any disk('local') fallback, log files, and framework dirs.
+RUN mkdir -p storage/product-media storage/invoices storage/receipts storage/documents \
     storage/framework/sessions storage/framework/views storage/framework/cache \
     storage/logs bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
@@ -47,5 +52,13 @@ HEALTHCHECK --interval=10s --timeout=5s --retries=10 --start-period=15s \
 # proxy — but it's still single-threaded PHP, not built for heavy
 # concurrent production load. Swap to php-fpm (or Octane) behind nginx
 # if/when traffic needs it.
+#
+# Note: horizon and scheduler (docker-compose.yml) build from this same
+# image but override CMD, so they don't run this migrate step — they
+# only depend_on db/redis being healthy, not on this migration finishing.
+# On a cold start it's possible for a queue worker to come up before
+# migrations land. Fine for solo local dev; if it bites you, move the
+# migrate step into a one-shot init service (same pattern as
+# minio-init) that api/horizon/scheduler all depend_on.
 CMD php artisan migrate --force && \
     php artisan serve --host=0.0.0.0 --port=8000
