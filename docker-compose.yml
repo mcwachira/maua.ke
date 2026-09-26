@@ -87,7 +87,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-maua-ke}
       POSTGRES_DB: ${POSTGRES_DB:-maua-ke}
     ports:
-      - "5435:5432"
+      - "5436:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
@@ -108,7 +108,7 @@ services:
     # survive a `docker compose restart redis` while you're mid-checkout.
     command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "6380:6379"
+      - "6381:6379"
     volumes:
       - redis-data:/data
     healthcheck:
@@ -138,7 +138,7 @@ services:
       # whatever host OS `composer install` you happen to have run.
       - api-vendor:/var/www/vendor
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -196,7 +196,7 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
     restart: unless-stopped
-    command: ["php", "artisan", "schedule:work"]
+    command: [ "php", "artisan", "schedule:work" ]
     environment:
       <<: *laravel-env
     volumes:
@@ -207,38 +207,56 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks: [maua-net]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "php",
+          "-r",
+          "exit(file_exists('/proc/1/cmdline') ? 0 : 1);"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - maua-net
 
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      target: runner
       args:
-        VITE_API_URL: ${VITE_API_URL:-/api}
-        VITE_APP_NAME: ${APP_NAME:-maua-ke}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8001/api}
+        NEXT_PUBLIC_APP_NAME: ${APP_NAME:-maua-ke}
+
     restart: unless-stopped
+
     environment:
-      VITE_API_URL: ${VITE_API_URL:-/api}
-      VITE_APP_NAME: ${APP_NAME:-maua-ke}
-    volumes:
-      - ./apps/web:/app
-      - web-node-modules:/app/node_modules
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8001/api}
+      NEXT_PUBLIC_APP_NAME: ${APP_NAME:-maua-ke}
+
     ports:
-      - "3000:3000"
+      - "3002:3000"
+
     depends_on:
       api:
         condition: service_healthy
+
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "node -e \"require('http').get('http://localhost:3000/', res => process.exit(res.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))\"",
+          "node -e \"require('http').get('http://localhost:3000/', res => process.exit(res.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))\""
         ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 15s
-    networks: [maua-net]
+
+    networks: [ maua-net ]
 
   nginx:
     image: nginx:1.27-alpine
@@ -285,29 +303,27 @@ services:
   # AWS S3 in production — no code branching between "local disk" and "s3".
   # -------------------------------------------------------------------------
   minio:
-    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    image: docker.io/pgsty/silo:latest
     restart: unless-stopped
-    command: ["server", "/data", "--console-address", ":9001"]
+    command: [ "server", "/data", "--console-address", ":9001" ]
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-maua-ke}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-maua-ke-secret}
     ports:
-      - "9000:9000" # S3 API — this is what AWS_ENDPOINT points at
-      - "9001:9001" # web console — browse uploaded files here
+      - "9000:9000"
+      - "9001:9001"
     volumes:
       - minio-data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      test: [ "CMD", "mc", "ready", "local" ]
       interval: 5s
       timeout: 5s
       retries: 10
-    networks: [maua-net]
+    networks: [ maua-net ]
 
-  # One-shot helper: creates the bucket the app expects on first boot so
-  # you never have to click through the MinIO console manually before
-  # uploads start working. Exits after it runs; that's expected.
+  # One-shot helper: creates the bucket the app expects on first boot.
   minio-init:
-    image: minio/mc:latest
+    image: docker.io/pgsty/mc:latest
     depends_on:
       minio:
         condition: service_healthy
@@ -317,7 +333,7 @@ services:
       mc mb --ignore-existing local/${MINIO_BUCKET:-maua-ke-media};
       mc anonymous set download local/${MINIO_BUCKET:-maua-ke-media};
       "
-    networks: [maua-net]
+    networks: [ maua-net ]
 
   # -------------------------------------------------------------------------
   # Mini observability stack — off by default (see "monitoring" profile).
