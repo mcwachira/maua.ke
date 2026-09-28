@@ -48,7 +48,7 @@ const columns = [
       { label: "About", href: "/about" },
       { label: "Blog", href: "/blog" },
       { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
+      { label: "terms", href: "/terms" },
     ],
   },
 ] as const;
