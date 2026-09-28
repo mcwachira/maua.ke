@@ -187,7 +187,7 @@ export default function RegisterPageClient() {
               </p>
             )}
 
-            {/* Terms */}
+            {/* terms */}
             <div className="flex items-start gap-2.5">
               <Checkbox
                 id="terms"
