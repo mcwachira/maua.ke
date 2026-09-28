@@ -4,40 +4,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Maua.ke design system
+ * Floral, warm, editorial + Neo-Brutalist
+ *
+ * - Warm floral colour palette
+ * - Editorial typography
+ * - Strong black borders
+ * - Offset hard shadows
+ * - Minimal rounded corners
+ * - Bold interactive states
+ */
+
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
+    /* Typography */
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
+
+    /* Radius */
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -45,85 +29,585 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    /*
+     * Neo-Brutalist spacing / shadows
+     */
+    --spacing-boxShadowX: 4px;
+    --spacing-boxShadowY: 4px;
+    --spacing-reverseBoxShadowX: -4px;
+    --spacing-reverseBoxShadowY: -4px;
+
+    --radius-base: 5px;
+
+    --font-weight-base: 500;
+    --font-weight-heading: 700;
+
+    /*
+     * Core shadcn colours
+     */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    /*
+     * Maua.ke brand colours
+     */
+    --color-blush: var(--blush);
+    --color-blush-foreground: var(--blush-foreground);
+
+    --color-sage: var(--sage);
+    --color-sage-foreground: var(--sage-foreground);
+
+    --color-gold: var(--gold);
+    --color-gold-foreground: var(--gold-foreground);
+
+    --color-cream: var(--cream);
+
+    /*
+     * Neo-Brutalist tokens
+     *
+     * These are kept because the existing Button component
+     * uses main, main-foreground and secondary-background.
+     */
+    --color-main: var(--main);
+    --color-main-foreground: var(--main-foreground);
+    --color-secondary-background: var(--secondary-background);
+    --color-overlay: var(--overlay);
+
+    --shadow-shadow: var(--shadow);
+
+    /*
+     * Charts
+     */
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    /*
+     * Sidebar
+     */
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    /*
+     * Animations
+     */
+    --animate-marquee: marquee 5s linear infinite;
+    --animate-marquee2: marquee2 5s linear infinite;
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    @keyframes marquee2 {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(0%);
+        }
+    }
 }
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+    /*
+     * Base
+     */
+    --radius: 0.5rem;
+
+    /*
+     * Maua.ke warm floral palette
+     */
+    --background: oklch(0.985 0.008 80);
+    --foreground: oklch(0.26 0.03 20);
+
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
+    --card-foreground: oklch(0.26 0.03 20);
+
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --popover-foreground: oklch(0.26 0.03 20);
+
+    /*
+     * Primary = deep floral rose
+     */
+    --primary: oklch(0.52 0.14 12);
+    --primary-foreground: oklch(0.985 0.008 80);
+
+    /*
+     * Secondary
+     */
+    --secondary: oklch(0.955 0.018 75);
+    --secondary-foreground: oklch(0.32 0.04 20);
+
+    /*
+     * Muted
+     */
+    --muted: oklch(0.955 0.014 70);
+    --muted-foreground: oklch(0.52 0.02 30);
+
+    /*
+     * Accent
+     */
+    --accent: oklch(0.93 0.035 30);
+    --accent-foreground: oklch(0.32 0.05 20);
+
+    /*
+     * Destructive
+     */
+    --destructive: oklch(0.55 0.2 27);
+    --destructive-foreground: oklch(0.985 0.008 80);
+
+    /*
+     * Neo-Brutalist borders
+     *
+     * IMPORTANT:
+     * Unlike the original floral system, borders are intentionally
+     * black and strong to preserve the Neo-Brutalist aesthetic.
+     */
+    --border: oklch(0% 0 0);
+    --input: oklch(0.9 0.015 60);
+    --ring: oklch(0.52 0.14 12);
+
+    /*
+     * Maua.ke supporting colours
+     */
+    --blush: oklch(0.92 0.045 15);
+    --blush-foreground: oklch(0.35 0.08 15);
+
+    --sage: oklch(0.78 0.05 145);
+    --sage-foreground: oklch(0.3 0.05 145);
+
+    --gold: oklch(0.78 0.09 80);
+    --gold-foreground: oklch(0.3 0.05 80);
+
+    --cream: oklch(0.97 0.015 80);
+
+    /*
+     * Neo-Brutalist button tokens
+     *
+     * main is the primary button background.
+     */
+    --main: oklch(0.52 0.14 12);
+    --main-foreground: oklch(0.985 0.008 80);
+
+    --secondary-background: oklch(1 0 0);
+
+    --overlay: oklch(0% 0 0 / 0.8);
+
+    /*
+     * Hard Neo-Brutalist shadow
+     */
+    --shadow: 4px 4px 0px 0px var(--border);
+
+    /*
+     * Soft shadows are still available for editorial sections
+     * where you don't want the hard Neo-Brutalist treatment.
+     */
+    --shadow-soft:
+            0 12px 40px -18px
+            color-mix(in oklab, var(--primary) 40%, transparent);
+
+    --shadow-lift:
+            0 22px 60px -24px
+            color-mix(in oklab, var(--primary) 50%, transparent);
+
+    /*
+     * Floral gradients
+     */
+    --gradient-bloom:
+            linear-gradient(
+                    135deg,
+                    color-mix(in oklab, var(--blush) 80%, transparent),
+                    color-mix(in oklab, var(--cream) 90%, transparent)
+            );
+
+    --gradient-petal:
+            linear-gradient(
+                    160deg,
+                    color-mix(in oklab, var(--primary) 12%, transparent),
+                    color-mix(in oklab, var(--gold) 18%, transparent)
+            );
+
+    /*
+     * Charts
+     */
+    --chart-1: oklch(0.52 0.14 12);
+    --chart-2: oklch(0.72 0.09 145);
+    --chart-3: oklch(0.78 0.11 80);
+    --chart-4: oklch(0.66 0.11 30);
+    --chart-5: oklch(0.6 0.08 320);
+
+    /*
+     * Sidebar
+     */
+    --sidebar: oklch(0.97 0.015 80);
+    --sidebar-foreground: oklch(0.26 0.03 20);
+
+    --sidebar-primary: oklch(0.52 0.14 12);
+    --sidebar-primary-foreground: oklch(0.985 0.008 80);
+
+    --sidebar-accent: oklch(0.93 0.035 30);
+    --sidebar-accent-foreground: oklch(0.32 0.05 20);
+
+    --sidebar-border: oklch(0% 0 0);
+    --sidebar-ring: oklch(0.52 0.14 12);
+
+    /*
+     * Active chart dot
+     */
+    --chart-active-dot: #000;
 }
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --background: oklch(0.19 0.02 25);
+    --foreground: oklch(0.95 0.012 70);
+
+    --card: oklch(0.23 0.023 25);
+    --card-foreground: oklch(0.95 0.012 70);
+
+    --popover: oklch(0.23 0.023 25);
+    --popover-foreground: oklch(0.95 0.012 70);
+
+    --primary: oklch(0.72 0.13 15);
+    --primary-foreground: oklch(0.19 0.02 25);
+
+    --secondary: oklch(0.27 0.025 25);
+    --secondary-foreground: oklch(0.95 0.012 70);
+
+    --muted: oklch(0.27 0.025 25);
+    --muted-foreground: oklch(0.73 0.02 40);
+
+    --accent: oklch(0.32 0.04 20);
+    --accent-foreground: oklch(0.95 0.012 70);
+
+    --destructive: oklch(0.68 0.18 25);
+    --destructive-foreground: oklch(0.19 0.02 25);
+
+    /*
+     * Keep borders strong in dark mode as well.
+     */
+    --border: oklch(0.95 0.012 70);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.72 0.13 15);
+
+    /*
+     * Supporting colours
+     */
+    --blush: oklch(0.36 0.06 15);
+    --blush-foreground: oklch(0.94 0.03 15);
+
+    --sage: oklch(0.45 0.05 145);
+    --sage-foreground: oklch(0.93 0.03 145);
+
+    --gold: oklch(0.72 0.09 80);
+    --gold-foreground: oklch(0.2 0.03 80);
+
+    --cream: oklch(0.25 0.02 60);
+
+    /*
+     * Neo-Brutalist button tokens
+     */
+    --main: oklch(0.72 0.13 15);
+    --main-foreground: oklch(0.19 0.02 25);
+
+    --secondary-background: oklch(0.23 0.023 25);
+
+    --overlay: oklch(0% 0 0 / 0.8);
+
+    /*
+     * Hard shadow
+     */
+    --shadow: 4px 4px 0px 0px var(--border);
+
+    /*
+     * Soft shadows
+     */
+    --shadow-soft:
+            0 12px 40px -18px
+            oklch(0 0 0 / 60%);
+
+    --shadow-lift:
+            0 22px 60px -24px
+            oklch(0 0 0 / 70%);
+
+    /*
+     * Charts
+     */
+    --chart-1: oklch(0.72 0.13 15);
+    --chart-2: oklch(0.65 0.07 145);
+    --chart-3: oklch(0.72 0.09 80);
+    --chart-4: oklch(0.66 0.11 30);
+    --chart-5: oklch(0.6 0.08 320);
+
+    /*
+     * Sidebar
+     */
+    --sidebar: oklch(0.22 0.022 25);
+    --sidebar-foreground: oklch(0.95 0.012 70);
+
+    --sidebar-primary: oklch(0.72 0.13 15);
+    --sidebar-primary-foreground: oklch(0.19 0.02 25);
+
+    --sidebar-accent: oklch(0.3 0.035 20);
+    --sidebar-accent-foreground: oklch(0.95 0.012 70);
+
+    --sidebar-border: oklch(0.95 0.012 70);
+    --sidebar-ring: oklch(0.72 0.13 15);
+
+    --chart-active-dot: #fff;
 }
 
+/* =========================================================
+   BASE
+   ========================================================= */
+
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply outline-ring/50;
+        border-color: var(--color-border);
     }
-  body {
-    @apply bg-background text-foreground;
+
+    html {
+        @apply font-sans;
+        scroll-behavior: smooth;
     }
-  html {
-    @apply font-sans;
+
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        font-family: var(--font-sans);
+        font-weight: var(--font-weight-base);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    /*
+     * Editorial headings
+     */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .font-display {
+        font-family: var(--font-display);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+    }
+
+    /*
+     * Make links feel deliberate rather than browser-default.
+     */
+    a {
+        transition:
+                color 150ms ease,
+                transform 150ms ease;
+    }
+
+    /*
+     * Selection
+     */
+    ::selection {
+        background: var(--primary);
+        color: var(--primary-foreground);
     }
 }
+
+/* =========================================================
+   NEO-BRUTALIST UTILITIES
+   ========================================================= */
+
+/*
+ * Hard shadow
+ *
+ * Example:
+ * className="shadow-shadow"
+ */
+@utility shadow-shadow {
+    box-shadow: var(--shadow);
+}
+
+/*
+ * Reverse hard shadow
+ */
+@utility shadow-reverse {
+    box-shadow:
+            -4px -4px 0px 0px var(--border);
+}
+
+/*
+ * Floral soft shadow
+ */
+@utility shadow-soft {
+    box-shadow: var(--shadow-soft);
+}
+
+/*
+ * Elevated floral shadow
+ */
+@utility shadow-lift {
+    box-shadow: var(--shadow-lift);
+}
+
+/*
+ * Bloom gradient
+ */
+@utility bloom-gradient {
+    background-image: var(--gradient-bloom);
+}
+
+/*
+ * Petal gradient
+ */
+@utility petal-gradient {
+    background-image: var(--gradient-petal);
+}
+
+/*
+ * Uppercase editorial label
+ */
+@utility eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/*
+ * Neo-Brutalist press effect
+ *
+ * Useful for cards and custom buttons.
+ */
+@utility brutal-hover {
+    transition:
+            transform 150ms ease,
+            box-shadow 150ms ease;
+
+    &:hover {
+        transform: translate(
+                var(--spacing-boxShadowX),
+                var(--spacing-boxShadowY)
+        );
+
+        box-shadow: none;
+    }
+}
+
+/*
+ * Neo-Brutalist card
+ */
+@utility brutal-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow);
+}
+
+/*
+ * Neo-Brutalist interactive element
+ */
+@utility brutal-button {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow);
+    transition:
+            transform 150ms ease,
+            box-shadow 150ms ease;
+
+    &:hover {
+        transform: translate(
+                var(--spacing-boxShadowX),
+                var(--spacing-boxShadowY)
+        );
+
+        box-shadow: none;
+    }
+
+    &:active {
+        transform: translate(
+                var(--spacing-boxShadowX),
+                var(--spacing-boxShadowY)
+        );
+
+        box-shadow: none;
+    }
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+body,
+.scrollbar {
+    --sb-track-color: var(--cream);
+    --sb-thumb-color: var(--border);
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 14px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border: 3px solid var(--sb-track-color);
+    border-radius: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .scrollbar {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
+
