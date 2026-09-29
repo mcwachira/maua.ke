@@ -55,7 +55,13 @@ export function AuthProvider({
   const queryClient = useQueryClient();
 
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  /*
+   * Loading is part of the public auth API and will be
+   * driven by the Laravel session check once connected.
+   * Until then it stays false.
+   */
+  const [loading] = useState(false);
 
   /*
    * Authentication will be connected to the Laravel API.
