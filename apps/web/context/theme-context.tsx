@@ -15,7 +15,8 @@ import type {
 } from "@/types/shop";
 
 import {
-  THEME_STORAGE_KEY,
+  loadTheme,
+  saveTheme,
 } from "@/lib/storage";
 
 interface ThemeContextValue {
@@ -64,20 +65,23 @@ export function ThemeProvider({
   children: ReactNode;
 }) {
   const [theme, setThemeState] =
-    useState<ThemeMode>("system");
+    useState<ThemeMode>(() => loadTheme());
 
   const [resolved, setResolved] =
-    useState<ResolvedTheme>("light");
+    useState<ResolvedTheme>(() =>
+      typeof window === "undefined"
+        ? "light"
+        : resolveTheme(loadTheme()),
+    );
 
+  /*
+   * Synchronise the external DOM with the current
+   * theme. This effect only writes to the document,
+   * it never derives React state.
+   */
   useEffect(() => {
-    const stored =
-      (localStorage.getItem(
-        THEME_STORAGE_KEY,
-      ) as ThemeMode | null) ?? "system";
-
-    setThemeState(stored);
-    setResolved(applyTheme(stored));
-  }, []);
+    applyTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     if (theme !== "system") {
@@ -108,10 +112,7 @@ export function ThemeProvider({
   const setTheme = useCallback(
     (mode: ThemeMode) => {
       setThemeState(mode);
-      localStorage.setItem(
-        THEME_STORAGE_KEY,
-        mode,
-      );
+      saveTheme(mode);
       setResolved(applyTheme(mode));
     },
     [],

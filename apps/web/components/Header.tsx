@@ -12,7 +12,6 @@ import {
   ShoppingBag,
   Sun,
   User,
-  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -491,21 +490,21 @@ export function Header() {
         {/* Mobile Category Strip                                              */}
         {/* ------------------------------------------------------------------ */}
 
-        <div className="hidden border-t lg:block">
-          <div className="scrollbar-none mx-auto flex max-w-7xl gap-2 overflow-x-auto px-3 py-2 sm:px-6">
-            {flowerCategories
-                .slice(0, 8)
-                .map((category) => (
-                    <Link
-                        key={category.slug}
-                        href={`/flowers/${category.slug}`}
-                        className="shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:text-xs"
-                    >
-                      {category.name}
-                    </Link>
-                ))}
-          </div>
-        </div>
+        {/*<div className="hidden border-t lg:block">*/}
+        {/*  <div className="scrollbar-none mx-auto flex max-w-7xl gap-2 overflow-x-auto px-3 py-2 sm:px-6">*/}
+        {/*    {flowerCategories*/}
+        {/*        .slice(0, 8)*/}
+        {/*        .map((category) => (*/}
+        {/*            <Link*/}
+        {/*                key={category.slug}*/}
+        {/*                href={`/flowers/${category.slug}`}*/}
+        {/*                className="shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:text-xs"*/}
+        {/*            >*/}
+        {/*              {category.name}*/}
+        {/*            </Link>*/}
+        {/*        ))}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </header>
   );
 }

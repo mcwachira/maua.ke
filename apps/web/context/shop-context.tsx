@@ -6,12 +6,9 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
-
-import {
-  products,
-} from "@/lib/catalog";
 
 import {
   calculateCartTotals,
@@ -85,53 +82,55 @@ export function ShopProvider({
                              }: {
   children: ReactNode;
 }) {
+  /*
+   * Lazy initialisers read the persisted shop state once,
+   * instead of syncing it into state from an effect.
+   * loadShopState is SSR-safe and returns null on the
+   * server, where the provider renders its empty default
+   * state until hydration completes.
+   */
   const [items, setItems] =
-    useState<CartItem[]>([]);
+    useState<CartItem[]>(() => {
+      const stored = loadShopState();
+
+      return Array.isArray(stored?.items)
+        ? stored.items
+        : [];
+    });
 
   const [wishlist, setWishlist] =
-    useState<string[]>([]);
+    useState<string[]>(() => {
+      const stored = loadShopState();
+
+      return Array.isArray(stored?.wishlist)
+        ? stored.wishlist
+        : [];
+    });
 
   const [delivery, setDeliveryState] =
-    useState<DeliveryDetails>(
-      emptyDelivery,
-    );
+    useState<DeliveryDetails>(() => ({
+      ...emptyDelivery,
+      ...(loadShopState()?.delivery ?? {}),
+    }));
 
   const [coupon, setCoupon] =
-    useState<string | null>(null);
+    useState<string | null>(() => {
+      const stored = loadShopState();
 
-  const [hydrated, setHydrated] =
-    useState(false);
+      return typeof stored?.coupon === "string"
+        ? stored.coupon
+        : null;
+    });
 
-  useEffect(() => {
-    const stored = loadShopState();
-
-    if (stored) {
-      setItems(
-        Array.isArray(stored.items)
-          ? stored.items
-          : [],
-      );
-
-      setWishlist(
-        Array.isArray(stored.wishlist)
-          ? stored.wishlist
-          : [],
-      );
-
-      setDeliveryState({
-        ...emptyDelivery,
-        ...(stored.delivery ?? {}),
-      });
-
-      setCoupon(
-        typeof stored.coupon === "string"
-          ? stored.coupon
-          : null,
-      );
-    }
-
-    setHydrated(true);
-  }, []);
+  /*
+   * Server renders the empty state; the client is
+   * considered hydrated once this subscription mounts.
+   */
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!hydrated) return;
