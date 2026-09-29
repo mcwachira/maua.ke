@@ -54,20 +54,20 @@ export default function AdminOrdersPage() {
           "Total",
         ]}
         rows={demoOrders.map((order) => [
-          order.orderNumber,
+          order.order,
           order.date,
           order.customer,
           order.recipient,
-          order.zone,
+          "—",
           <Badge
             key={`${order.id}-payment`}
             variant={
-              order.paymentStatus === "paid"
+              order.status === "Delivered"
                 ? "secondary"
                 : "outline"
             }
           >
-            {order.paymentStatus}
+            {order.status}
           </Badge>,
           <Badge key={`${order.id}-status`}>
             {order.status.replace(/-/g, " ")}

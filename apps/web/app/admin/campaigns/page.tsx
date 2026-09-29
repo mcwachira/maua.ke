@@ -31,7 +31,7 @@ export default function AdminCampaignsPage() {
           campaign.name,
           campaign.starts,
           campaign.ends,
-          campaign.products,
+          campaign.sent,
           <Badge
             key={campaign.id}
             variant={

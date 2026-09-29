@@ -48,9 +48,9 @@ export default function AdminDeliveriesPage() {
         rows={demoDeliveries.map((delivery) => [
           delivery.order,
           delivery.recipient,
-          delivery.zone,
+          delivery.area,
           delivery.slot,
-          delivery.agent,
+          "—",
           <Badge
             key={delivery.id}
             variant={

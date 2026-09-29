@@ -797,12 +797,12 @@ export const inventoryRows: InventoryRow[] = [
 
 
 export const revenueSeries = [
-  { month: "Apr", revenue: 182000 },
-  { month: "May", revenue: 224000 },
-  { month: "Jun", revenue: 198000 },
-  { month: "Jul", revenue: 267000 },
-  { month: "Aug", revenue: 312000 },
-  { month: "Sep", revenue: 348000 },
+  { month: "Apr", revenue: 182000, orders: 48 },
+  { month: "May", revenue: 224000, orders: 58 },
+  { month: "Jun", revenue: 198000, orders: 52 },
+  { month: "Jul", revenue: 267000, orders: 66 },
+  { month: "Aug", revenue: 312000, orders: 78 },
+  { month: "Sep", revenue: 348000, orders: 84 },
 ];
 
 export const occasionSeries = [

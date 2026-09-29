@@ -192,10 +192,10 @@ export default function AdminDashboard() {
             "Total",
           ]}
           rows={demoOrders.map((order) => [
-            order.orderNumber,
+            order.order,
             order.customer,
             order.recipient,
-            `${order.deliveryDate} · ${order.zone}`,
+            order.date,
             <Badge
               key={order.id}
               variant={
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
 
       <div>
         <h2 className="mb-3 font-display text-xl font-semibold sm:text-2xl">
-          Today's deliveries
+          Today&apos;s deliveries
         </h2>
 
         <AdminTable
@@ -228,9 +228,9 @@ export default function AdminDashboard() {
           rows={demoDeliveries.map((delivery) => [
             delivery.order,
             delivery.recipient,
-            delivery.zone,
+            delivery.area,
             delivery.slot,
-            delivery.agent,
+            "—",
             delivery.status,
           ])}
         />
