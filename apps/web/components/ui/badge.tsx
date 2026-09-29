@@ -4,8 +4,6 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import * as React from "react"
-
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
@@ -16,6 +14,8 @@ const badgeVariants = cva(
         default: "bg-background text-foreground",
         neutral: "bg-secondary-background text-foreground",
         secondary: "bg-muted text-foreground",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "bg-transparent text-foreground",
       },
     },
     defaultVariants: {
