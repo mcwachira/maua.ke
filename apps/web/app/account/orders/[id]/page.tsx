@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -86,7 +87,7 @@ export default function OrderDetailPage() {
   if (isError) {
     return (
       <div className="border-2 border-destructive bg-destructive/10 p-5 text-sm text-destructive">
-        We couldn't load this order. Please try again.
+        We couldn&apos;t load this order. Please try again.
       </div>
     );
   }
@@ -95,7 +96,7 @@ export default function OrderDetailPage() {
     return (
       <div className="border-2 border-border bg-card p-8 text-center shadow-shadow">
         <p className="font-display text-2xl">
-          We couldn't find that order
+          We couldn&apos;t find that order
         </p>
 
         <Button
@@ -198,7 +199,7 @@ export default function OrderDetailPage() {
               className="flex items-center gap-3"
             >
               {item.image_url && (
-                <img
+                <Image
                   src={item.image_url}
                   alt=""
                   loading="lazy"

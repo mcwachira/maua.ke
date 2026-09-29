@@ -59,7 +59,7 @@ export default function OrdersPage() {
   if (isError) {
     return (
       <div className="border-2 border-destructive bg-destructive/10 p-5 text-sm text-destructive">
-        We couldn't load your orders. Please try again.
+        We couldn&apos;t load your orders. Please try again.
       </div>
     );
   }
