@@ -147,7 +147,7 @@ export default function RemindersPage() {
             >
               <div className="space-y-1.5">
                 <Label htmlFor="title">
-                  What's the occasion?
+                  What&apos;s the occasion?
                 </Label>
 
                 <Input

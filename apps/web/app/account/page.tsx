@@ -70,7 +70,7 @@ export default function AccountPage() {
   if (isError) {
     return (
       <div className="border-2 border-destructive bg-destructive/10 p-5 text-sm text-destructive">
-        We couldn't load your account information. Please refresh
+        We couldn&apos;t load your account information. Please refresh
         and try again.
       </div>
     );
@@ -125,7 +125,7 @@ export default function AccountPage() {
 
         {orders.length === 0 ? (
           <div className="border-2 border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            You haven't placed an order yet.
+            You haven&apos;t placed an order yet.
           </div>
         ) : (
           <ul className="space-y-3">

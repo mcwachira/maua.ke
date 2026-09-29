@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -17,10 +17,6 @@ interface Profile {
 
 export default function ProfilePage() {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
 
   const {
     data: profile,
@@ -31,12 +27,55 @@ export default function ProfilePage() {
     queryFn: () => api<Profile>("/profile"),
   });
 
-  useEffect(() => {
-    if (!profile) return;
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <h2 className="font-display text-2xl sm:text-3xl">
+          Profile
+        </h2>
 
-    setFullName(profile.full_name ?? "");
-    setPhone(profile.phone ?? "");
-  }, [profile]);
+        <div className="h-48 animate-pulse border-2 border-border bg-muted" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <h2 className="font-display text-2xl sm:text-3xl">
+        Profile
+      </h2>
+
+      {/*
+       * The key remounts the form whenever the loaded
+       * profile changes, so field state is initialised
+       * from props instead of synced in an effect.
+       */}
+      <ProfileForm
+        key={`${user?.id}-${profile?.full_name}-${profile?.phone}`}
+        email={user?.email ?? ""}
+        initialFullName={profile?.full_name ?? ""}
+        initialPhone={profile?.phone ?? ""}
+        userId={user?.id}
+      />
+    </div>
+  );
+}
+
+function ProfileForm({
+  email,
+  initialFullName,
+  initialPhone,
+  userId,
+}: {
+  email: string;
+  initialFullName: string;
+  initialPhone: string;
+  userId: string | number | undefined;
+}) {
+  const queryClient = useQueryClient();
+
+  const [fullName, setFullName] = useState(initialFullName);
+  const [phone, setPhone] = useState(initialPhone);
 
   const save = useMutation({
     mutationFn: () =>
@@ -52,7 +91,7 @@ export default function ProfilePage() {
       toast.success("Profile updated");
 
       void queryClient.invalidateQueries({
-        queryKey: ["profile", user?.id],
+        queryKey: ["profile", userId],
       });
 
       void queryClient.invalidateQueries({
@@ -66,17 +105,12 @@ export default function ProfilePage() {
   });
 
   return (
-    <div className="space-y-6">
-      <h2 className="font-display text-2xl sm:text-3xl">
-        Profile
-      </h2>
-
-      <form
-        className="space-y-5 border-2 border-border bg-card p-5 shadow-shadow sm:p-6"
-        onSubmit={(event) => {
-          event.preventDefault();
-          save.mutate();
-        }}
+    <form
+      className="space-y-5 border-2 border-border bg-card p-5 shadow-shadow sm:p-6"
+      onSubmit={(event) => {
+        event.preventDefault();
+        save.mutate();
+      }}
       >
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-1.5">
@@ -102,7 +136,7 @@ export default function ProfilePage() {
             <Input
               id="email"
               type="email"
-              value={user?.email ?? ""}
+              value={email}
               disabled
             />
           </div>
@@ -128,13 +162,12 @@ export default function ProfilePage() {
 
         <Button
           type="submit"
-          disabled={save.isPending || isLoading}
+          disabled={save.isPending}
         >
           {save.isPending
             ? "Saving…"
             : "Save changes"}
         </Button>
-      </form>
-    </div>
+    </form>
   );
 }
