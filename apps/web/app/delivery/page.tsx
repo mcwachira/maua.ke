@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalPage } from "@/components/site/LegalPage";
+import { LegalPage } from "@/components/LegalPage";
 import {
   currency,
   deliverySlots,

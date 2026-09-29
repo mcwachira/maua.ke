@@ -3,13 +3,12 @@
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
-  ChevronDown,
   Flower2,
   SlidersHorizontal,
   Sparkles,
   X,
 } from "lucide-react"
-import { useMemo } from "react"
+import { useMemo, Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -52,6 +51,14 @@ interface ShopSearch {
 }
 
 export default function ShopPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-7xl px-4 py-14" />}>
+      <ShopContent />
+    </Suspense>
+  )
+}
+
+function ShopContent() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -95,8 +102,9 @@ export default function ShopPage() {
     let list = [...products]
 
     if (search.occasion) {
+      const occasion = search.occasion
       list = list.filter((product) =>
-        product.occasions.includes(search.occasion!),
+        product.occasions.includes(occasion),
       )
     }
 
@@ -107,8 +115,9 @@ export default function ShopPage() {
     }
 
     if (search.color) {
+      const color = search.color
       list = list.filter((product) =>
-        product.colors.includes(search.color!),
+        product.colors.includes(color),
       )
     }
 
@@ -207,7 +216,7 @@ export default function ShopPage() {
     label: string
   }[]
 
-  const FilterContent = () => (
+  const renderFilterContent = () => (
     <div className="space-y-8">
       <div className="grid gap-8 sm:grid-cols-2">
         {/* Occasion */}
@@ -470,7 +479,7 @@ export default function ShopPage() {
 
                 {/* Scrollable filters */}
                 <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-7 sm:py-7">
-                  <FilterContent />
+                  {renderFilterContent()}
                 </div>
 
                 {/* Footer */}
@@ -549,7 +558,7 @@ export default function ShopPage() {
                 onClick={() =>
                   updateSearch({
                     [filter.key]: undefined,
-                  })
+                  } as Partial<ShopSearch>)
                 }
                 className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs transition-colors hover:bg-accent"
               >

@@ -12,14 +12,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { currency } from "@/lib/catalog";
-import { demoPayments } from "@/lib/demo-account";
+import { demoPayments, type DemoPayment } from "@/lib/demo-account";
 import { api } from "@/lib/api/api";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function PaymentsPage() {
   const { user } = useAuth();
 
-  const { data: payments } = useQuery({
+  const { data: payments } = useQuery<DemoPayment[]>({
     queryKey: ["payments", user?.id],
     enabled: false,
     queryFn: () => api("/payments"),
@@ -48,7 +48,7 @@ export default function PaymentsPage() {
           </TableHeader>
 
           <TableBody>
-            {payments.map((payment) => (
+            {payments.map((payment: DemoPayment) => (
               <TableRow key={payment.id}>
                 <TableCell>{payment.date}</TableCell>
 
