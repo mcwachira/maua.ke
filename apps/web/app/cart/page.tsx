@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Tag, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -20,13 +21,15 @@ import {
     EmptyState,
     PageHeader,
     Section,
-} from "@/components/site/Section";
+} from "@/components/Section";
 import {
     addOns,
     currency,
     deliveryZones,
 } from "@/lib/catalog";
-import { useShop } from "@/lib/store";
+import type { AddOn } from "@/lib/catalog";
+import { useShop } from "@/hooks/use-shop";
+import type { CartItem } from "@/types/shop";
 
 export default function CartPage() {
     const {
@@ -81,17 +84,17 @@ export default function CartPage() {
                 ) : (
                     <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
                         <div className="space-y-4">
-                            {active.map((item) => {
+                            {active.map((item: CartItem) => {
                                 const itemAddOns = item.addOnIds
-                                    .map((id) => addOns.find((addOn) => addOn.id === id))
-                                    .filter(Boolean);
+                                    .map((id: string) => addOns.find((addOn: AddOn) => addOn.id === id))
+                                    .filter((a): a is AddOn => Boolean(a));
 
                                 return (
                                     <article
                                         key={item.key}
                                         className="flex gap-4 rounded-2xl border bg-card p-4"
                                     >
-                                        <img
+                                        <Image
                                             src={item.image}
                                             alt={item.name}
                                             loading="lazy"
@@ -124,8 +127,7 @@ export default function CartPage() {
                                                 <p className="mt-1 text-xs text-muted-foreground">
                                                     Add-ons:{" "}
                                                     {itemAddOns
-                                                        .map((addOn) => addOn?.name)
-                                                        .filter(Boolean)
+                                                        .map((addOn) => addOn.name)
                                                         .join(", ")}
                                                 </p>
                                             )}
@@ -218,7 +220,7 @@ export default function CartPage() {
                                                 key={item.key}
                                                 className="flex items-center gap-4 rounded-2xl border bg-card p-4"
                                             >
-                                                <img
+                                                <Image
                                                     src={item.image}
                                                     alt={item.name}
                                                     loading="lazy"
@@ -264,8 +266,8 @@ export default function CartPage() {
 
                                 <Select
                                     value={delivery.zone}
-                                    onValueChange={(value) =>
-                                        setDelivery({ zone: value })
+                                    onValueChange={(value: string | null) =>
+                                        setDelivery({ zone: value ?? "" })
                                     }
                                 >
                                     <SelectTrigger

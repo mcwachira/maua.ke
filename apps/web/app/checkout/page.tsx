@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -53,6 +54,22 @@ const steps = [
   "Personalise",
   "Payment",
 ] as const;
+
+function generateOrderNumber(): string {
+  const suffix = Math.floor(
+    10000 + Math.random() * 89999,
+  );
+
+  return `MK-${suffix}`;
+}
+
+function isoDateFromNow(
+  offsetMs: number,
+): string {
+  return new Date(Date.now() + offsetMs)
+    .toISOString()
+    .slice(0, 10);
+}
 
 export default function CheckoutPage() {
   const {
@@ -213,9 +230,7 @@ export default function CheckoutPage() {
        * the order ID.
        */
 
-      const orderNumber = `MK-${Math.floor(
-        10000 + Math.random() * 89999,
-      )}`;
+      const orderNumber = generateOrderNumber();
 
       const card = greetingCards.find(
         (item) => item.id === cardId,
@@ -322,15 +337,9 @@ export default function CheckoutPage() {
     }
   };
 
-  const today = new Date()
-    .toISOString()
-    .slice(0, 10);
+  const today = isoDateFromNow(0);
 
-  const tomorrow = new Date(
-    Date.now() + 864e5,
-  )
-    .toISOString()
-    .slice(0, 10);
+  const tomorrow = isoDateFromNow(864e5);
 
   return (
     <>
@@ -385,7 +394,7 @@ export default function CheckoutPage() {
                       key={item.key}
                       className="flex items-center gap-3"
                     >
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
                         loading="lazy"
@@ -440,7 +449,7 @@ export default function CheckoutPage() {
                       }
                     />
 
-                    I'm sending this as a gift
+                    I&apos;m sending this as a gift
                   </label>
 
                   <Field
@@ -544,11 +553,7 @@ export default function CheckoutPage() {
                   <Field label="Delivery area">
                     <Select
                       value={delivery.zone}
-                      onValueChange={(value) =>
-                        setDelivery({
-                          zone: value,
-                        })
-                      }
+                      onValueChange={(value: string | null) => setDelivery({ zone: value ?? "" })}
                     >
                       <SelectTrigger aria-label="Delivery zone">
                         <SelectValue />
@@ -687,11 +692,7 @@ export default function CheckoutPage() {
 
                   <RadioGroup
                     value={delivery.slot}
-                    onValueChange={(value) =>
-                      setDelivery({
-                        slot: value,
-                      })
-                    }
+                    onValueChange={(value: unknown) => setDelivery({ slot: typeof value === "string" ? value : String(value) })}
                   >
                     {deliverySlots.map((slot) => (
                       <label
@@ -725,7 +726,7 @@ export default function CheckoutPage() {
                   <Field label="Greeting card">
                     <Select
                       value={cardId}
-                      onValueChange={setCardId}
+                      onValueChange={(value: string | null) => setCardId(value ?? "none")}
                     >
                       <SelectTrigger aria-label="Greeting card">
                         <SelectValue />
@@ -776,7 +777,7 @@ export default function CheckoutPage() {
 
                   <RadioGroup
                     value={payment}
-                    onValueChange={setPayment}
+                    onValueChange={(value: unknown) => setPayment(typeof value === "string" ? value : "mpesa")}
                   >
                     <label className="flex items-center gap-3 rounded-xl border p-4 text-sm">
                       <RadioGroupItem
