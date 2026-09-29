@@ -1,30 +1,41 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import type { Metadata } from "next";
 
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { AppProviders } from "./providers";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+import "./globals.css";
+import { Header } from "@/components/Header"
+import { Toaster } from "@/components/ui/sonner"
+import { Footer } from "@/components/Footer"
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+export const metadata: Metadata = {
+  title: {
+    default: "Maua.ke",
+    template: "%s | Maua.ke",
+  },
+  description:
+    "Flowers, gifts and care packages delivered across Kenya.",
+};
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
+                                     children,
+                                   }: Readonly<{
+  children: React.ReactNode;
 }>) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+    <body>
+    <AppProviders>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+      {children}
+        <Footer/>
+      </div>
+      <Toaster position="top-center" richColors />
+    </AppProviders>
+    </body>
     </html>
-  )
+  );
 }

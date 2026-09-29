@@ -20,7 +20,16 @@ import { Button } from "@/components/ui/button";
 import { PageHeader, Section } from "@/components/Section";
 import { useAuth } from "@/hooks/useAuth";
 
-const nav = [
+import type { LucideIcon } from "lucide-react";
+
+interface AccountNavItem {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  exact?: boolean;
+}
+
+const nav: AccountNavItem[] = [
   {
     href: "/account",
     label: "Overview",
@@ -72,7 +81,7 @@ const nav = [
     label: "Security",
     icon: Shield,
   },
-] as const;
+];
 
 function isActivePath(
   pathname: string,
