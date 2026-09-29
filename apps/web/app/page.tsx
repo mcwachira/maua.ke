@@ -358,7 +358,7 @@ action={
             </p>
 
             <h2 className="mt-2 text-3xl leading-tight sm:text-4xl">
-              Choose the moment. We'll handle the flowers.
+              Choose the moment. We&apos;ll handle the flowers.
             </h2>
 
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
