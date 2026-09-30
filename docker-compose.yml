@@ -265,7 +265,7 @@ services:
     volumes:
       - ./infrastructure/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
       web:
         condition: service_healthy
