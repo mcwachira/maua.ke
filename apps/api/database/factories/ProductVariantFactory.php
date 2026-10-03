@@ -20,15 +20,20 @@ class ProductVariantFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'name' => fake()->randomElements([
-                'small',
-                'medium',
-                'large',
+            'name' => fake()->randomElement([
+                '12 Roses',
+                '24 Roses',
+                '36 Roses',
             ]),
-            'sku' => strtoupper(fake()->unique()->bothify('VAR-####??')),
-            'price_minor' => fake()->numberBetween(150000, 1000000),
+            'sku' => fake()->unique()->bothify('VAR-####??'),
+            'price_minor' => 350000,
             'currency' => 'KES',
-            'attributes' => null,
+
+            // PHP array; Eloquent converts it to JSON.
+            'attributes' => [
+                'rose_count' => 12,
+            ],
+
             'is_active' => true,
             'sort_order' => 0,
         ];

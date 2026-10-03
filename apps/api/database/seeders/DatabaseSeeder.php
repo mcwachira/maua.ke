@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             OccasionSeeder::class,
             AddonSeeder::class,
+            InventorySeeder::class,
         ]);
     }
 }
