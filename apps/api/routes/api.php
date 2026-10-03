@@ -1,8 +1,22 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\CartController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('v1')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/cart', [CartController::class, 'show']);
+
+        Route::post('/cart/items', [CartController::class, 'store']);
+
+        Route::patch('/cart/items/{cartItem}', [
+            CartController::class,
+            'update',
+        ]);
+
+        Route::delete('/cart/items/{cartItem}', [
+            CartController::class,
+            'destroy',
+        ]);
+    });
