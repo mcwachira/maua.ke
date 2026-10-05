@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\CartController;
+use App\Http\Controllers\Api\V1\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
@@ -18,5 +19,10 @@ Route::prefix('v1')
         Route::delete('/cart/items/{cartItem}', [
             CartController::class,
             'destroy',
+        ]);
+
+        Route::post('/checkout', [
+            CheckoutController::class,
+            'store',
         ]);
     });
