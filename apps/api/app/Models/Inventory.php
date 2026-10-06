@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Validation\ValidationException;
 
 class Inventory extends Model
 {
@@ -36,5 +37,24 @@ class Inventory extends Model
     public function getAvailableQuantityAttribute(): int
     {
         return $this->on_hand_quantity - $this->reserve_quantity;
+    }
+
+    public function reserve(int $quantity): void
+    {
+        if ($quantity < 1) {
+            throw new \InvalidArgumentException(
+                'Reservation quantity must be at least 1.'
+            );
+        }
+
+        if ($quantity > $this->available_quantity) {
+            throw ValidationException::withMessages([
+                'quantity' => "Only {$this->available_quantity} item(s) are available.",
+            ]);
+        }
+
+        $this->increment('reserve_quantity', $quantity);
+
+        $this->refresh();
     }
 }
