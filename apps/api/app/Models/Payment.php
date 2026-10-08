@@ -66,4 +66,8 @@ class Payment extends Model
         return $this->hasMany(PaymentTransaction::class);
     }
 
+    public function callbacks(): HasMany
+    {
+        return $this->hasMany(PaymentCallback::class);
+    }
 }
