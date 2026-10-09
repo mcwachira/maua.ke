@@ -14,6 +14,7 @@ class PaymentCallback extends Model
     use HasFactory;
     protected $fillable = [
         'payment_id',
+        'payment_attempt_id',
         'provider',
         'provider_reference',
         'event_type',
@@ -28,6 +29,7 @@ class PaymentCallback extends Model
     {
         return [
             'payment_id' => 'integer',
+            'payment_attempt_id' => 'integer',
             'provider' => PaymentProvider::class,
             'payload' => 'array',
             'headers' => 'array',
@@ -39,5 +41,10 @@ class PaymentCallback extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function paymentAttempt(): BelongsTo
+    {
+        return $this->belongsTo(PaymentAttempt::class);
     }
 }
