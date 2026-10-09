@@ -23,6 +23,7 @@ class PaymentCallbackFactory extends Factory
     {
         return [
             'payment_id' => Payment::factory(),
+            'payment_attempt_id' => null,
             'provider' => PaymentProvider::Mpesa,
             'provider_reference' => fake()->uuid(),
             'event_type' => 'payment.completed',
