@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\PaymentProvider;
 use App\Models\Payment;
+use App\Models\PaymentAttempt;
 use App\Models\PaymentCallback;
 use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,12 +14,13 @@ class PaymentCallbackTest extends TestCase
 {
     use RefreshDatabase;
 
-    /* |--------------------------------------------------------------------------
-     | Relationships |
-    --------------------------------------------------------------------------
-    */
+    /*
+ |--------------------------------------------------------------------------
+ | Relationships
+ |--------------------------------------------------------------------------
+ */
 
-    public function test_payment_callback_belongs_to_payment():void
+    public function test_payment_callback_belongs_to_payment(): void
     {
         $payment = Payment::factory()->create();
 
@@ -27,22 +29,78 @@ class PaymentCallbackTest extends TestCase
         ]);
 
         // The callback should resolve back to the payment that owns it.
-         $this->assertTrue( $callback->payment->is($payment) );
+        $this->assertTrue(
+            $callback->payment->is($payment)
+        );
     }
 
-
-    public function test_payment_has_many_callbacks():void
+    public function test_payment_has_many_callbacks(): void
     {
-
         $payment = Payment::factory()->create();
+
         // First callback belonging to this payment.
-        PaymentCallback::factory()->create([ 'payment_id' => $payment->id,
-            ]);
+        PaymentCallback::factory()->create([
+            'payment_id' => $payment->id,
+        ]);
 
         // Second callback belonging to the same payment.
-        PaymentCallback::factory()->create([ 'payment_id' => $payment->id, ]);
+        PaymentCallback::factory()->create([
+            'payment_id' => $payment->id,
+        ]);
+
         // The payment should now have two callback records.
-        $this->assertCount( 2, $payment->fresh()->callbacks
+        $this->assertCount(
+            2,
+            $payment->fresh()->callbacks
+        );
+    }
+
+    public function test_payment_callback_belongs_to_payment_attempt(): void
+    {
+        $payment = Payment::factory()->create();
+
+        $attempt = PaymentAttempt::factory()->create([
+            'payment_id' => $payment->id,
+            'attempt_number' => 1,
+        ]);
+
+        $callback = PaymentCallback::factory()->create([
+            'payment_id' => $payment->id,
+            'payment_attempt_id' => $attempt->id,
+        ]);
+
+        // The callback should resolve to the payment attempt
+        // that produced the callback.
+        $this->assertTrue(
+            $callback->paymentAttempt->is($attempt)
+        );
+    }
+
+    public function test_payment_attempt_has_many_callbacks(): void
+    {
+        $payment = Payment::factory()->create();
+
+        $attempt = PaymentAttempt::factory()->create([
+            'payment_id' => $payment->id,
+            'attempt_number' => 1,
+        ]);
+
+        // First callback belonging to this attempt.
+        PaymentCallback::factory()->create([
+            'payment_id' => $payment->id,
+            'payment_attempt_id' => $attempt->id,
+        ]);
+
+        // Second callback belonging to the same attempt.
+        PaymentCallback::factory()->create([
+            'payment_id' => $payment->id,
+            'payment_attempt_id' => $attempt->id,
+        ]);
+
+        // The attempt should now have two callbacks.
+        $this->assertCount(
+            2,
+            $attempt->fresh()->callbacks
         );
     }
 
@@ -75,7 +133,8 @@ class PaymentCallbackTest extends TestCase
             ];
         $callback = PaymentCallback::factory()->create([ 'payload' => $payload, ]);
         // JSON stored in the database should come back as a PHP array.
-        $this->assertIsArray($callback->payload); $this->assertSame( $payload, $callback->payload );
+        $this->assertIsArray($callback->payload);
+        $this->assertSame( $payload, $callback->payload );
     }
 
     public function test_payment_callback_casts_headers_to_array(): void
@@ -94,7 +153,7 @@ class PaymentCallbackTest extends TestCase
     Processing state
       |-------------------------------------------------------------------------- */
 
-    public function test_payment_callback_casts_payload_to_boolean(): void
+    public function test_payment_callback_casts_processed_to_boolean(): void
     {
         $callback = PaymentCallback::factory()->create(['processed' => true,]);
 
